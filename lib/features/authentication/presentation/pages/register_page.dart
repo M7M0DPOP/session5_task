@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:session5_task/features/authentication/presentation/cubit/register_cubit.dart';
 import 'package:session5_task/features/authentication/presentation/pages/login_page.dart';
+import 'package:session5_task/features/authentication/presentation/widgets/custom_text_form_field.dart';
 
 import 'success_opertion.dart';
 
@@ -83,26 +84,15 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     // TextFormField for Email
-                    TextFormField(
-                      style: TextStyle(color: Colors.white),
-                      controller: emailController,
-                      decoration: InputDecoration(
-                        hint: Text(
-                          'Enter your email',
-                          style: TextStyle(color: Colors.white60, fontSize: 18),
-                        ),
-                        fillColor: const Color.fromARGB(255, 28, 35, 51),
-                        filled: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
+                    CustomTextFormField(
+                      Controller: emailController,
+                      hintText: 'Enter your email',
                       validator: (value) {
-                        if (value!.isEmpty) {
+                        if (value.isEmpty) {
                           return 'Please enter your email';
                         }
-                        if (!RegExp(r'\w+@\w+').hasMatch(value)) {
-                          return 'Please enter a valid email address';
+                        if (!RegExp(r'\w+@\w+.com').hasMatch(value)) {
+                          return 'email must have @ and .com';
                         }
                         return null;
                       },
@@ -120,36 +110,19 @@ class _RegisterPageState extends State<RegisterPage> {
                     // TextFormField for Password
                     BlocBuilder<RegisterCubit, RegisterState>(
                       builder: (context, state) {
-                        return TextFormField(
-                          style: TextStyle(color: Colors.white),
-                          obscureText: isObscure,
-                          controller: passwordController,
-                          decoration: InputDecoration(
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                                isObscure = !isObscure;
-                                context.read<RegisterCubit>().toggleObscure();
-                              },
-                              color: Colors.white60,
-                              icon: isObscure
-                                  ? Icon(Icons.visibility_off)
-                                  : Icon(Icons.visibility),
-                            ),
-                            hint: Text(
-                              'Enter your password',
-                              style: TextStyle(
-                                color: Colors.white60,
-                                fontSize: 18,
-                              ),
-                            ),
-                            fillColor: const Color.fromARGB(255, 28, 35, 51),
-                            filled: true,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
+                        return CustomTextFormField(
+                          icon: isObscure
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          toggleObscure: () {
+                            isObscure = !isObscure;
+                            context.read<RegisterCubit>().toggleObscure();
+                          },
+                          isObscure: isObscure,
+                          Controller: passwordController,
+                          hintText: 'Enter your password',
                           validator: (value) {
-                            if (value!.isEmpty) {
+                            if (value.isEmpty) {
                               return 'Please enter your password';
                             }
                             if (value.length < 6) {
