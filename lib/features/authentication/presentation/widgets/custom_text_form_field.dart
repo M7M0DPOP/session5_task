@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatefulWidget {
-  final TextEditingController Controller;
+  final TextEditingController controller;
   bool isObscure;
   final String hintText;
   final String? Function(String) validator;
@@ -9,7 +9,7 @@ class CustomTextFormField extends StatefulWidget {
   IconData? icon;
   CustomTextFormField({
     super.key,
-    required this.Controller,
+    required this.controller,
     this.isObscure = false,
     required this.hintText,
     required this.validator,
@@ -27,7 +27,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     return TextFormField(
       style: TextStyle(color: Colors.white),
       obscureText: widget.isObscure,
-      controller: widget.Controller,
+      controller: widget.controller,
       decoration: InputDecoration(
         suffixIcon: IconButton(
           onPressed: widget.toggleObscure,

@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -84,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     // TextFormField for Email
                     CustomTextFormField(
-                      Controller: emailController,
+                      controller: emailController,
                       hintText: 'Enter your email',
                       validator: (value) {
                         if (value.isEmpty) {
@@ -120,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                     BlocBuilder<LoginCubit, LoginState>(
                       builder: (context, state) {
                         return CustomTextFormField(
-                          Controller: passwordController,
+                          controller: passwordController,
                           hintText: 'Enter your password',
                           isObscure: isObscure,
                           toggleObscure: () {

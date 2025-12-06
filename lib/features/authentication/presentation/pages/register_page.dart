@@ -86,7 +86,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                     // TextFormField for Email
                     CustomTextFormField(
-                      Controller: emailController,
+                      controller: emailController,
                       hintText: 'Enter your email',
                       validator: (value) {
                         if (value.isEmpty) {
@@ -120,7 +120,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             context.read<RegisterCubit>().toggleObscure();
                           },
                           isObscure: isObscure,
-                          Controller: passwordController,
+                          controller: passwordController,
                           hintText: 'Enter your password',
                           validator: (value) {
                             if (value.isEmpty) {
