@@ -32,6 +32,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       emit(RegisterFailure(e.toString()));
     }
   }
+  //thanks for Flutter Root youtube channel for google sign in help
 
   Future<void> signInWithGoogle() async {
     emit(RegisterLoading());

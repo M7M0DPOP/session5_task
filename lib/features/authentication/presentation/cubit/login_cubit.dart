@@ -31,7 +31,7 @@ class LoginCubit extends Cubit<LoginState> {
       emit(LoginFailure(e.toString()));
     }
   }
-
+//thanks for Flutter Root youtube channel for google sign in help
   Future<void> signInWithGoogle() async {
     emit(LoginLoading());
     // Trigger the authentication flow
