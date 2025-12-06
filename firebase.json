@@ -1,0 +1,21 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "mindsetl2",
+                    "appId": "1:1062772872326:android:b0dc4f4b2e5f1e1b91ed07",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "mindsetl2",
+                    "configurations": {
+                        "android": "1:1062772872326:android:b0dc4f4b2e5f1e1b91ed07"
+                    }
+                }
+            }
+        }
+    }
+}

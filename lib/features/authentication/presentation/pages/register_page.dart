@@ -1,0 +1,306 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:session5_task/features/authentication/presentation/cubit/register_cubit.dart';
+import 'package:session5_task/features/authentication/presentation/pages/login_page.dart';
+
+import 'success_opertion.dart';
+
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
+
+  @override
+  createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  bool isObscure = true;
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 15, 23, 28),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: BlocProvider(
+          create: (context) => RegisterCubit(),
+          child: BlocConsumer<RegisterCubit, RegisterState>(
+            listener: (context, state) {
+              if (state is RegisterSuccess) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SuccessOpertion()),
+                );
+              } else if (state is RegisterFailure) {
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+              }
+            },
+            builder: (context, state) {
+              return Form(
+                key: formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.max,
+                  spacing: 20,
+                  children: [
+                    Icon(
+                      Icons.app_registration,
+                      size: 100,
+                      color: Colors.white,
+                    ),
+                    Text(
+                      'Welcome to MyApp',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      'Sign up to continue',
+                      style: TextStyle(color: Colors.white60, fontSize: 18),
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        'Email',
+                        style: TextStyle(
+                          color: const Color.fromARGB(239, 255, 255, 255),
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    // TextFormField for Email
+                    TextFormField(
+                      style: TextStyle(color: Colors.white),
+                      controller: emailController,
+                      decoration: InputDecoration(
+                        hint: Text(
+                          'Enter your email',
+                          style: TextStyle(color: Colors.white60, fontSize: 18),
+                        ),
+                        fillColor: const Color.fromARGB(255, 28, 35, 51),
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter your email';
+                        }
+                        if (!RegExp(r'\w+@\w+').hasMatch(value)) {
+                          return 'Please enter a valid email address';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        'Password',
+                        style: TextStyle(
+                          color: Color.fromARGB(239, 255, 255, 255),
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    // TextFormField for Password
+                    BlocBuilder<RegisterCubit, RegisterState>(
+                      builder: (context, state) {
+                        return TextFormField(
+                          style: TextStyle(color: Colors.white),
+                          obscureText: isObscure,
+                          controller: passwordController,
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                isObscure = !isObscure;
+                                context.read<RegisterCubit>().toggleObscure();
+                              },
+                              color: Colors.white60,
+                              icon: isObscure
+                                  ? Icon(Icons.visibility_off)
+                                  : Icon(Icons.visibility),
+                            ),
+                            hint: Text(
+                              'Enter your password',
+                              style: TextStyle(
+                                color: Colors.white60,
+                                fontSize: 18,
+                              ),
+                            ),
+                            fillColor: const Color.fromARGB(255, 28, 35, 51),
+                            filled: true,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            if (value.length < 6) {
+                              return 'Password must be at least 6 characters long';
+                            }
+                            return null;
+                          },
+                        );
+                      },
+                    ),
+                    BlocBuilder<RegisterCubit, RegisterState>(
+                      builder: (context, state) {
+                        return ElevatedButton(
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              context.read<RegisterCubit>().registerUser(
+                                emailController.text,
+                                passwordController.text,
+                              );
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(
+                              255,
+                              40,
+                              140,
+                              235,
+                            ),
+                            minimumSize: Size(double.infinity, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: Text(
+                            'Sign up',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            color: Colors.white60,
+                            thickness: 1,
+                            height: 20,
+                            radius: BorderRadius.all(Radius.circular(8)),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'OR',
+                            style: TextStyle(
+                              color: Colors.white60,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Divider(
+                            color: Colors.white60,
+                            thickness: 1,
+                            height: 20,
+                            radius: BorderRadius.all(Radius.circular(8)),
+                          ),
+                        ),
+                      ],
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.read<RegisterCubit>().signInWithGoogle();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 15, 23, 28),
+                        minimumSize: Size(double.infinity, 50),
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(color: Colors.white24, width: 1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(18.0),
+                            child: SvgPicture.asset(
+                              'icons/google.svg',
+                              width: 24,
+                              height: 24,
+                            ),
+                          ),
+                          Text(
+                            'continue with Google',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'have an account?',
+                          style: TextStyle(color: Colors.white70, fontSize: 16),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginPage(),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(
+                              255,
+                              15,
+                              23,
+                              28,
+                            ),
+                          ),
+                          child: Text(
+                            ' Sign In',
+                            style: TextStyle(
+                              color: const Color.fromARGB(255, 26, 117, 192),
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
