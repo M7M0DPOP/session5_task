@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:session5_task/features/authentication/presentation/cubit/login_cubit.dart';
 import 'package:session5_task/features/authentication/presentation/pages/register_page.dart';
+import 'package:session5_task/features/authentication/presentation/widgets/custom_elevated_button.dart';
 import 'package:session5_task/features/authentication/presentation/widgets/custom_text_form_field.dart';
 
 import 'success_opertion.dart';
@@ -141,7 +142,8 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       },
                     ),
-                    ElevatedButton(
+                    // Sign In Button
+                    CustomElevatedButton(
                       onPressed: () {
                         if (formKey.currentState!.validate()) {
                           context.read<LoginCubit>().loginUser(
@@ -150,18 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                           );
                         }
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(
-                          255,
-                          40,
-                          140,
-                          235,
-                        ),
-                        minimumSize: Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
+                      backgroundColor: const Color.fromARGB(255, 40, 140, 235),
                       child: Text(
                         'Sign In',
                         style: TextStyle(
@@ -203,18 +194,13 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ],
                     ),
-                    ElevatedButton(
+                    // Sign In with Google Button
+                    CustomElevatedButton(
                       onPressed: () async {
                         await context.read<LoginCubit>().signInWithGoogle();
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 15, 23, 28),
-                        minimumSize: Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(color: Colors.white24, width: 1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
+                      backgroundColor: const Color.fromARGB(255, 15, 23, 28),
+
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -244,7 +230,7 @@ class _LoginPageState extends State<LoginPage> {
                           'Don\'t have an account?',
                           style: TextStyle(color: Colors.white70, fontSize: 16),
                         ),
-                        ElevatedButton(
+                        TextButton(
                           onPressed: () {
                             Navigator.push(
                               context,

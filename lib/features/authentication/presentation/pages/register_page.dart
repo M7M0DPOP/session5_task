@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:session5_task/features/authentication/presentation/cubit/register_cubit.dart';
 import 'package:session5_task/features/authentication/presentation/pages/login_page.dart';
+import 'package:session5_task/features/authentication/presentation/widgets/custom_elevated_button.dart';
 import 'package:session5_task/features/authentication/presentation/widgets/custom_text_form_field.dart';
 
 import 'success_opertion.dart';
@@ -133,9 +134,16 @@ class _RegisterPageState extends State<RegisterPage> {
                         );
                       },
                     ),
+                    // Sign Up Button
                     BlocBuilder<RegisterCubit, RegisterState>(
                       builder: (context, state) {
-                        return ElevatedButton(
+                        return CustomElevatedButton(
+                          backgroundColor: const Color.fromARGB(
+                            255,
+                            40,
+                            140,
+                            235,
+                          ),
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
                               context.read<RegisterCubit>().registerUser(
@@ -144,18 +152,6 @@ class _RegisterPageState extends State<RegisterPage> {
                               );
                             }
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                              255,
-                              40,
-                              140,
-                              235,
-                            ),
-                            minimumSize: Size(double.infinity, 50),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
                           child: Text(
                             'Sign up',
                             style: TextStyle(
@@ -199,18 +195,12 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       ],
                     ),
-                    ElevatedButton(
+                    // Sign In with Google Button
+                    CustomElevatedButton(
+                      backgroundColor: const Color.fromARGB(255, 15, 23, 28),
                       onPressed: () {
                         context.read<RegisterCubit>().signInWithGoogle();
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 15, 23, 28),
-                        minimumSize: Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(color: Colors.white24, width: 1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -240,7 +230,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           'have an account?',
                           style: TextStyle(color: Colors.white70, fontSize: 16),
                         ),
-                        ElevatedButton(
+                        TextButton(
                           onPressed: () {
                             Navigator.push(
                               context,
