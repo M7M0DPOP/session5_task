@@ -39,7 +39,7 @@ class LoginCubit extends Cubit<LoginState> {
       if (!isInitialized) {
         await googleSignIn.initialize(
           serverClientId:
-              '1062772872326-8csh306hepjf9tjltqe6g31lbmroe2r2.apps.googleusercontent.com',
+               'here is the firebase google sign in server client id from google sign in method of authentication',
         );
         isInitialized = true;
       }
