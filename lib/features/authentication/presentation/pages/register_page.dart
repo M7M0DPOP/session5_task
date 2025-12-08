@@ -5,6 +5,7 @@ import 'package:session5_task/features/authentication/presentation/cubit/registe
 import 'package:session5_task/features/authentication/presentation/pages/login_page.dart';
 import 'package:session5_task/features/authentication/presentation/widgets/custom_elevated_button.dart';
 import 'package:session5_task/features/authentication/presentation/widgets/custom_text_form_field.dart';
+import 'package:session5_task/main.dart';
 
 import 'success_opertion.dart';
 
@@ -30,6 +31,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(backgroundColor: const Color.fromARGB(255, 15, 23, 28)),
       backgroundColor: const Color.fromARGB(255, 15, 23, 28),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -198,8 +200,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     // Sign In with Google Button
                     CustomElevatedButton(
                       backgroundColor: const Color.fromARGB(255, 15, 23, 28),
-                      onPressed: () {
-                        context.read<RegisterCubit>().signInWithGoogle();
+                      onPressed: () async {
+                        userCredential = await context
+                            .read<RegisterCubit>()
+                            .signInWithGoogle();
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

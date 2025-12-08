@@ -34,65 +34,23 @@ class RegisterCubit extends Cubit<RegisterState> {
   }
   //thanks for Flutter Root youtube channel for google sign in help
 
-  Future<void> signInWithGoogle() async {
+  Future signInWithGoogle() async {
     emit(RegisterLoading());
     // Trigger the authentication flow
     try {
-      if (!isInitialized) {
-        await googleSignIn.initialize(
-          serverClientId:
-              'here is the firebase google sign in server client id from google sign in method of authentication',
-        );
-        isInitialized = true;
-      }
-      final GoogleSignInAccount? googleSignInAccount = await googleSignIn
-          .authenticate();
-      // Obtain the auth details from the request
-      if (googleSignInAccount == null) {
-        throw FirebaseAuthException(
-          code: 'SIGNIN ABORTED BY USER',
-          message: 'Sign in incomplete because user Exited.',
-        );
-      }
-
-      final idToken = googleSignInAccount.authentication.idToken;
-      final accessClient = googleSignInAccount.authorizationClient;
-
-      GoogleSignInClientAuthorization? googleSignInAuthentication =
-          await accessClient.authorizationForScopes(['email', 'profile']);
-      final accessToken = googleSignInAuthentication?.accessToken;
-      if (accessToken == null) {
-        final auth2 = await accessClient.authorizationForScopes([
-          'email',
-          'profile',
-        ]);
-        if (auth2 == null || auth2.accessToken == null) {
-          throw FirebaseAuthException(
-            code: 'NO ACCESS TOKEN',
-            message: 'Failed to retrieve access token.',
-          );
-        }
-        googleSignInAuthentication = auth2;
-      }
-      final credential = GoogleAuthProvider.credential(
-        accessToken: accessToken,
-        idToken: idToken,
+      userCredential = await FirebaseAuth.instance.signInWithProvider(
+        GoogleAuthProvider(),
       );
-      userCredential = await FirebaseAuth.instance.signInWithCredential(
-        credential,
-      );
+      print(userCredential ?? 'null');
       emit(RegisterSuccess());
-      return;
     } catch (e) {
       print(e);
       emit(RegisterFailure(e.toString()));
-      return;
     }
   }
 
   Future<void> signout() async {
     emit(RegisterLoading());
-    await googleSignIn.signOut();
     await FirebaseAuth.instance.signOut();
     emit(RegisterInitial());
   }
