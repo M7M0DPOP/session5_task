@@ -1,9 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../main.dart';
-
 class SuccessOpertion extends StatelessWidget {
-  const SuccessOpertion({super.key});
+  final UserCredential userCredential;
+  const SuccessOpertion({super.key, required this.userCredential});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class SuccessOpertion extends StatelessWidget {
               style: TextStyle(color: Colors.white60, fontSize: 16),
             ),
             Text(
-              'The Email is : ${userCredential?.user?.email ?? ''}\nThe UID is : ${userCredential?.user?.uid ?? ''}  ',
+              'The Email is : ${userCredential.user?.email}\nThe UID is : ${userCredential.user?.uid}  ',
               style: TextStyle(color: Colors.white60, fontSize: 16),
             ),
           ],

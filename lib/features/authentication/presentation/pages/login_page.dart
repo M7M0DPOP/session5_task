@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -41,7 +40,10 @@ class _LoginPageState extends State<LoginPage> {
               if (state is LoginSuccess) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SuccessOpertion()),
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        SuccessOpertion(userCredential: state.userCredential),
+                  ),
                 );
               } else if (state is LoginFailure) {
                 ScaffoldMessenger.of(

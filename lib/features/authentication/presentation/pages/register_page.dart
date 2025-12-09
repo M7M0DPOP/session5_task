@@ -5,7 +5,6 @@ import 'package:session5_task/features/authentication/presentation/cubit/registe
 import 'package:session5_task/features/authentication/presentation/pages/login_page.dart';
 import 'package:session5_task/features/authentication/presentation/widgets/custom_elevated_button.dart';
 import 'package:session5_task/features/authentication/presentation/widgets/custom_text_form_field.dart';
-import 'package:session5_task/main.dart';
 
 import 'success_opertion.dart';
 
@@ -42,7 +41,10 @@ class _RegisterPageState extends State<RegisterPage> {
               if (state is RegisterSuccess) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SuccessOpertion()),
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        SuccessOpertion(userCredential: state.userCredential),
+                  ),
                 );
               } else if (state is RegisterFailure) {
                 ScaffoldMessenger.of(
@@ -201,9 +203,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     CustomElevatedButton(
                       backgroundColor: const Color.fromARGB(255, 15, 23, 28),
                       onPressed: () async {
-                        userCredential = await context
-                            .read<RegisterCubit>()
-                            .signInWithGoogle();
+                        await context.read<RegisterCubit>().signInWithGoogle();
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

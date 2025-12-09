@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../main.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
@@ -14,11 +12,11 @@ class LoginCubit extends Cubit<LoginState> {
   loginUser(String email, String password) async {
     emit(LoginLoading());
     try {
-      userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final user = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      emit(LoginSuccess());
+      emit(LoginSuccess(userCredential: user));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
@@ -37,10 +35,10 @@ class LoginCubit extends Cubit<LoginState> {
     emit(LoginLoading());
     // Trigger the authentication flow
     try {
-      userCredential = await FirebaseAuth.instance.signInWithProvider(
+      final user = await FirebaseAuth.instance.signInWithProvider(
         GoogleAuthProvider(),
       );
-      emit(LoginSuccess());
+      emit(LoginSuccess(userCredential: user));
     } catch (e) {
       print(e);
       emit(LoginFailure(e.toString()));

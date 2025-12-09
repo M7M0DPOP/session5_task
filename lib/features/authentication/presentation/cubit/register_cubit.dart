@@ -1,8 +1,7 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:session5_task/main.dart';
 
 part 'register_state.dart';
 
@@ -16,9 +15,9 @@ class RegisterCubit extends Cubit<RegisterState> {
   registerUser(String email, String password) async {
     emit(RegisterLoading());
     try {
-      userCredential = await FirebaseAuth.instance
+      final user = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-      emit(RegisterSuccess());
+      emit(RegisterSuccess(userCredential: user));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
@@ -38,11 +37,10 @@ class RegisterCubit extends Cubit<RegisterState> {
     emit(RegisterLoading());
     // Trigger the authentication flow
     try {
-      userCredential = await FirebaseAuth.instance.signInWithProvider(
+      final user = await FirebaseAuth.instance.signInWithProvider(
         GoogleAuthProvider(),
       );
-      print(userCredential ?? 'null');
-      emit(RegisterSuccess());
+      emit(RegisterSuccess(userCredential: user));
     } catch (e) {
       print(e);
       emit(RegisterFailure(e.toString()));
