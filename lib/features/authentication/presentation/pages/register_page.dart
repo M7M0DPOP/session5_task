@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:session5_task/features/authentication/presentation/cubit/register_cubit.dart';
+import 'package:session5_task/features/authentication/presentation/pages/home_page.dart';
 import 'package:session5_task/features/authentication/presentation/pages/login_page.dart';
 import 'package:session5_task/features/authentication/presentation/widgets/custom_elevated_button.dart';
 import 'package:session5_task/features/authentication/presentation/widgets/custom_text_form_field.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'success_opertion.dart';
+import 'success_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -41,10 +43,7 @@ class _RegisterPageState extends State<RegisterPage> {
               if (state is RegisterSuccess) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        SuccessOpertion(userCredential: state.userCredential),
-                  ),
+                  MaterialPageRoute(builder: (context) => HomePage()),
                 );
               } else if (state is RegisterFailure) {
                 ScaffoldMessenger.of(
@@ -204,6 +203,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       backgroundColor: const Color.fromARGB(255, 15, 23, 28),
                       onPressed: () async {
                         await context.read<RegisterCubit>().signInWithGoogle();
+                        final SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        await prefs.setBool('is_loged_in', true);
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

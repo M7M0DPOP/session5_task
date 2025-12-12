@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:session5_task/features/authentication/presentation/cubit/login_cubit.dart';
+import 'package:session5_task/features/authentication/presentation/pages/home_page.dart';
 import 'package:session5_task/features/authentication/presentation/pages/register_page.dart';
 import 'package:session5_task/features/authentication/presentation/widgets/custom_elevated_button.dart';
 import 'package:session5_task/features/authentication/presentation/widgets/custom_text_form_field.dart';
 
-import 'success_opertion.dart';
+import 'success_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -40,10 +41,7 @@ class _LoginPageState extends State<LoginPage> {
               if (state is LoginSuccess) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        SuccessOpertion(userCredential: state.userCredential),
-                  ),
+                  MaterialPageRoute(builder: (context) => HomePage()),
                 );
               } else if (state is LoginFailure) {
                 ScaffoldMessenger.of(
